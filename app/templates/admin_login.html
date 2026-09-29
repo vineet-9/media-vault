@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Vault — Admin sign in</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="login-shell">
+    <div class="login-card">
+      <div class="login-eyebrow">MACHINE VAULT — ADMIN</div>
+      <h1 class="login-title">Sign in</h1>
+      <p class="login-sub">Manage machine records and media. Customers don't need to sign in — they can look up a machine directly from the <a href="/" style="color: var(--red); font-weight: 600;">home page</a>.</p>
+
+      {% if error %}
+      <div class="error-banner">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" action="/admin/login">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" autocomplete="username" required autofocus />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required />
+        </div>
+        <button type="submit" class="btn">Sign in</button>
+      </form>
+
+      <div class="hint">
+        First run default — change this immediately:<br />
+        <code>admin</code> / <code>ChangeMe_Admin1</code>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

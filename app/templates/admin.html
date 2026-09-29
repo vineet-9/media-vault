@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Vault — Admin</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Machine Vault <span class="mark">admin</span></div>
+    <div class="who">
+      <a class="topbar-link" href="/" target="_blank" rel="noopener">View public site</a>
+      <span>{{ admin.username }}</span>
+      <span class="role-pill admin">admin</span>
+      <a class="logout-link" href="/admin/logout">Sign out</a>
+    </div>
+  </div>
+
+  <div class="page">
+    <div class="tabs">
+      <button class="tab active" data-tab="records">Manage records</button>
+      <button class="tab" data-tab="admins">Manage admins</button>
+      <button class="tab" data-tab="logs">Activity log</button>
+      <button class="tab" data-tab="analytics">Analytics</button>
+    </div>
+
+    <!-- ===== Records tab ===== -->
+    <div class="tab-panel active" id="tab-records">
+      <div class="lookup-panel">
+        <div class="section-label">NEW MACHINE RECORD</div>
+        <h1 class="lookup-title">Create a record</h1>
+        <p class="lookup-desc">Creates the entry customers will see when they enter this {{ id_length }}-digit ID.</p>
+
+        <form id="create-record-form">
+          <div class="field">
+            <label for="new-record-id">Record ID ({{ id_length }} digits)</label>
+            <input type="text" id="new-record-id" maxlength="{{ id_length }}" placeholder="{{ '0' * id_length }}" required />
+          </div>
+          <div class="field">
+            <label for="new-name">Name</label>
+            <input type="text" id="new-name" placeholder="e.g. CNC Lathe Model X200" />
+          </div>
+          <div class="field">
+            <label for="new-make">Make / manufacturer</label>
+            <input type="text" id="new-make" placeholder="e.g. Acme Industrial Co." />
+          </div>
+          <div class="field">
+            <label for="new-purpose">Purpose / use</label>
+            <textarea id="new-purpose" rows="2" placeholder="What is this machine used for?"></textarea>
+          </div>
+          <div class="field">
+            <label for="new-working">How it works</label>
+            <textarea id="new-working" rows="2" placeholder="Brief explanation of its operation"></textarea>
+          </div>
+          <div class="field">
+            <label for="new-applications">Applications</label>
+            <textarea id="new-applications" rows="2" placeholder="Where / how it's typically applied"></textarea>
+          </div>
+          <div class="field">
+            <label for="new-files">Photos / videos / PDF manuals (optional — you can also add these later)</label>
+            <input type="file" id="new-files" multiple accept="image/*,video/*,application/pdf" />
+          </div>
+          <button type="submit" class="btn secondary" style="width: auto;">Create record</button>
+        </form>
+        <span class="lookup-status" id="create-status"></span>
+      </div>
+
+      <div class="results-head">
+        <h2 class="results-title">All records</h2>
+        <span class="results-count" id="records-count"></span>
+      </div>
+      <div class="field" style="max-width: 360px;">
+        <input type="text" id="records-search" placeholder="Search by ID, name, or make…" />
+      </div>
+      <div id="records-list-mount"></div>
+    </div>
+
+    <!-- ===== Admins tab ===== -->
+    <div class="tab-panel" id="tab-admins">
+      <div class="lookup-panel">
+        <div class="section-label">YOUR ACCOUNT</div>
+        <h1 class="lookup-title">Change your password</h1>
+        <p class="lookup-desc">Update the password for the account you're currently signed in as ({{ admin.username }}).</p>
+
+        <form class="record-form" id="change-password-form">
+          <div class="field">
+            <label for="current-password">Current password</label>
+            <input type="password" id="current-password" required />
+          </div>
+          <div class="field">
+            <label for="new-password-self">New password</label>
+            <input type="password" id="new-password-self" placeholder="min. 6 characters" required />
+          </div>
+          <button type="submit" class="btn secondary">Update password</button>
+        </form>
+        <span class="lookup-status" id="change-password-status"></span>
+      </div>
+
+      <div class="lookup-panel">
+        <div class="section-label">NEW ADMIN</div>
+        <h1 class="lookup-title">Create an admin account</h1>
+        <p class="lookup-desc">Anyone with an account here has full CRUD access to every record.</p>
+
+        <form class="record-form" id="create-user-form">
+          <div class="field">
+            <label for="new-username">Username</label>
+            <input type="text" id="new-username" placeholder="e.g. jsmith" required />
+          </div>
+          <div class="field">
+            <label for="new-password">Password</label>
+            <input type="password" id="new-password" placeholder="min. 6 characters" required />
+          </div>
+          <button type="submit" class="btn secondary">Create admin</button>
+        </form>
+        <span class="lookup-status" id="create-user-status"></span>
+      </div>
+
+      <div class="results-head">
+        <h2 class="results-title">All admins</h2>
+        <span class="results-count" id="users-count"></span>
+      </div>
+      <div id="users-table-mount"></div>
+    </div>
+
+    <!-- ===== Activity log tab ===== -->
+    <div class="tab-panel" id="tab-logs">
+      <div class="results-head">
+        <h2 class="results-title">Activity log</h2>
+        <button class="btn secondary" id="refresh-logs-btn" style="width: auto;">Refresh</button>
+      </div>
+      <div id="logs-table-mount"></div>
+    </div>
+
+    <!-- ===== Analytics tab ===== -->
+    <div class="tab-panel" id="tab-analytics">
+      <div class="results-head">
+        <h2 class="results-title">Analytics</h2>
+        <select id="analytics-period" class="analytics-period-select">
+          <option value="7">Last 7 days</option>
+          <option value="30" selected>Last 30 days</option>
+          <option value="90">Last 90 days</option>
+          <option value="3650">All time</option>
+        </select>
+      </div>
+      <div class="stat-grid" id="analytics-stats"></div>
+      <div class="results-head">
+        <h2 class="results-title">Most looked-up machines</h2>
+      </div>
+      <div id="analytics-table-mount"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+  <script src="/static/js/admin.js"></script>
+  <script>
+    initAdmin({ idLength: {{ id_length }} });
+    initChangePassword();
+    initUserManagement();
+    initActivityLog();
+    initAnalytics();
+    initTabs();
+  </script>
+</body>
+</html>

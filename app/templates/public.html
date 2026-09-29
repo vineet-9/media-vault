@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Machine Vault — Equipment Lookup</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+  <div class="topbar">
+    <div class="brand">Machine Vault <span class="mark">v1</span></div>
+    <a class="admin-link" href="/admin/login">Admin</a>
+  </div>
+
+  <div class="page">
+    <div class="lookup-panel">
+      <div class="section-label">EQUIPMENT LOOKUP</div>
+      <h1 class="lookup-title">Enter the {{ id_length }}-digit number on the machine</h1>
+      <p class="lookup-desc">Find its name, purpose, how it works, and photos or videos showing it in use.</p>
+
+      <div class="digit-row" id="digit-row"></div>
+
+      <div class="lookup-actions">
+        <button class="btn secondary" id="lookup-btn">Look it up</button>
+        <span class="lookup-status" id="lookup-status"></span>
+      </div>
+    </div>
+
+    <div id="results-area"></div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+  <script>
+    initLookup({ idLength: {{ id_length }}, resultsMount: document.getElementById('results-area') });
+  </script>
+</body>
+</html>
